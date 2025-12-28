@@ -1,3 +1,5 @@
+import { register } from './api.js';
+
 export function renderRegister() {
   document.querySelector('#app').innerHTML = `
     <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -13,7 +15,7 @@ export function renderRegister() {
             </a>
           </p>
         </div>
-        <form class="mt-8 space-y-6" action="#" method="POST">
+        <form id="register-form" class="mt-8 space-y-6">
           <input type="hidden" name="remember" value="true">
           <div class="rounded-md shadow-sm -space-y-px">
             <div>
@@ -56,5 +58,31 @@ export function renderRegister() {
         </form>
       </div>
     </div>
-  `
+  `;
+
+  document.getElementById('register-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name = e.target.name.value;
+    const email = e.target['email-address'].value;
+    const password = e.target.password.value;
+    const password_confirmation = e.target['confirm-password'].value;
+    const role = e.target.role.value;
+
+    try {
+      const data = await register({
+        name,
+        email,
+        password,
+        password_confirmation,
+        role
+      });
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      alert('Registration Successful!');
+      window.location.href = '/';
+    } catch (err) {
+      alert(err.message);
+    }
+  });
 }

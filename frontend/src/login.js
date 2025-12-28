@@ -1,3 +1,5 @@
+import { login } from './api.js';
+
 export function renderLogin() {
   document.querySelector('#app').innerHTML = `
     <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -13,7 +15,7 @@ export function renderLogin() {
             </a>
           </p>
         </div>
-        <form class="mt-8 space-y-6" action="#" method="POST">
+        <form id="login-form" class="mt-8 space-y-6">
           <input type="hidden" name="remember" value="true">
           <div class="rounded-md shadow-sm -space-y-px">
             <div>
@@ -43,17 +45,27 @@ export function renderLogin() {
 
           <div>
             <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-              <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                <!-- Heroicon name: solid/lock-closed -->
-                <svg class="h-5 w-5 text-blue-500 group-hover:text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a7 7 0 01-7 7H9a7 7 0 01-7-7v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
-                </svg>
-              </span>
               Sign in
             </button>
           </div>
         </form>
       </div>
     </div>
-  `
+  `;
+
+  document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    try {
+      const data = await login(email, password);
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      alert('Login Successful!');
+      window.location.href = '/';
+    } catch (err) {
+      alert(err.message);
+    }
+  });
 }

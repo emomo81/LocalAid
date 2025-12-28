@@ -2,6 +2,7 @@ import './style.css'
 import { renderLogin } from './login.js'
 import { renderRegister } from './register.js'
 import { renderServices } from './services.js'
+import { renderBook } from './book.js'
 
 // Simple Router
 const routes = {
@@ -9,6 +10,7 @@ const routes = {
   '/login': renderLogin,
   '/register': renderRegister,
   '/services': renderServices,
+  '/book': renderBook,
 };
 
 function renderHome() {
@@ -74,4 +76,54 @@ window.addEventListener('popstate', router);
 // Initial load
 document.addEventListener('DOMContentLoaded', () => {
   router();
+  checkAuthState();
 });
+
+function checkAuthState() {
+  const token = localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  // Find nav container (simplified for now, assuming standard structure)
+  // In a real app, this would be reactive or part of the render function
+  const navRight = document.querySelector('nav .hidden.md\\:flex');
+  if (!navRight) return;
+
+  if (token && user) {
+    // User is logged in
+    navRight.innerHTML = `
+            <a href="/" class="text-gray-600 hover:text-blue-600 font-medium" data-link>Home</a>
+            <a href="/services" class="text-gray-600 hover:text-blue-600 font-medium" data-link>Services</a>
+            <span class="text-gray-600 font-medium">Hi, ${user.name}</span>
+            <button id="logout-btn" class="text-red-600 hover:text-red-700 font-medium">Logout</button>
+            <a href="/book" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition" data-link>Book Now</a>
+        `;
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      // Optional: Call API to invalidate token
+      // await fetch(`${API_URL}/logout`, { method: 'POST', headers: { Authorization: `Bearer ${token}` } });
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '/login';
+    });
+  } else {
+    // User is guest (Default)
+    navRight.innerHTML = `
+            <a href="/" class="text-gray-600 hover:text-blue-600 font-medium" data-link>Home</a>
+            <a href="/services" class="text-gray-600 hover:text-blue-600 font-medium" data-link>Services</a>
+            <a href="/login" class="text-gray-600 hover:text-blue-600 font-medium" data-link>Login</a>
+            <a href="/book" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition" data-link>Book Now</a>
+        `;
+  }
+
+  attachLinks(); // Re-attach links for new elements
+}
+
+// Hook into router to update auth state on navigation
+const originalRouter = router;
+router = function () {
+  const path = window.location.pathname;
+  const view = routes[path] || renderHome;
+  view();
+  attachLinks();
+  checkAuthState();
+};
