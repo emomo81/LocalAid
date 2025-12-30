@@ -141,7 +141,10 @@ $categories_stmt = $category->readAll();
                                     class="h-8 w-8 rounded-full bg-gradient-to-r from-primary-600 to-secondary flex items-center justify-center mr-2 text-xs font-bold text-white">
                                     <?php echo strtoupper(substr($row['provider_name'], 0, 1)); ?>
                                 </div>
-                                <span><?php echo htmlspecialchars($row['provider_name']); ?></span>
+                                <span class="mr-1"><?php echo htmlspecialchars($row['provider_name']); ?></span>
+                                <?php if (!empty($row['is_verified'])): ?>
+                                    <i class="fa-solid fa-circle-check text-blue-400 text-xs" title="Verified Provider"></i>
+                                <?php endif; ?>
                             </div>
                             <div class="text-gray-400 flex items-center">
                                 <i class="fa-solid fa-map-marker-alt mr-1"></i>
