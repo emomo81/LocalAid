@@ -74,69 +74,21 @@ class User
         return false;
     }
 
-    // Verify Password
+    // Login (Verify Password)
+    // Note: Call emailExists first to populate $this->password (hash)
     public function verifyPassword($password)
     {
         return password_verify($password, $this->password);
     }
 
-    // --- Admin Verification Methods --- //
-
-    // Get Pending Verifications
-    public function getPendingVerifications()
-    {
-        $query = "SELECT id, username, email, phone, verification_doc FROM " . $this->table_name . " WHERE verification_status = 'pending'";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-        return $stmt;
-    }
-
-    // Approve Verification
-    public function approveVerification($user_id)
-    {
-        $query = "UPDATE " . $this->table_name . " SET verification_status = 'approved', is_verified = 1 WHERE id = ?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(1, $user_id);
-        return $stmt->execute();
-    }
-
-    // Reject Verification
-    public function rejectVerification($user_id)
-    {
-        $query = "UPDATE " . $this->table_name . " SET verification_status = 'rejected', is_verified = 0 WHERE id = ?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(1, $user_id);
-        return $stmt->execute();
-    }
-
     // Get Profile Data
     public function getProfile()
     {
-        $query = "SELECT username, email, role, phone, bio, location, avatar_url, is_verified, verification_status FROM " . $this->table_name . " WHERE id = ? LIMIT 0,1";
+        $query = "SELECT username, email, role, phone, bio, location, avatar_url FROM " . $this->table_name . " WHERE id = ? LIMIT 0,1";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(1, $this->id);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
-    // Submit Verification Document
-    public function submitVerification($user_id, $file_path)
-    {
-        $query = "UPDATE " . $this->table_name . " 
-                SET verification_status = 'pending', verification_doc = :verification_doc 
-                WHERE id = :id";
-
-        $stmt = $this->conn->prepare($query);
-
-        $file_path = htmlspecialchars(strip_tags($file_path));
-
-        $stmt->bindParam(':verification_doc', $file_path);
-        $stmt->bindParam(':id', $user_id);
-
-        if ($stmt->execute()) {
-            return true;
-        }
-        return false;
     }
 
     // Update Profile
@@ -145,8 +97,6 @@ class User
         $query = "UPDATE " . $this->table_name . " 
                 SET phone = :phone, bio = :bio, location = :location, avatar_url = :avatar_url 
                 WHERE id = :id";
-
-        $stmt = $this->conn->prepare($query);
 
         $stmt = $this->conn->prepare($query);
 

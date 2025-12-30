@@ -18,16 +18,14 @@ module.exports = {
         secondary: '#f43f5e', // Rose
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        display: ['Outfit', 'sans-serif'], // New Heading Font
+        sans: ['Inter', 'sans-serif'], // Keep Inter
       },
       backdropBlur: {
-        xs: '2px',
+        xs: '2px', // Keep
       },
       animation: {
         'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
         'fade-in': 'fadeIn 1s ease-out forwards',
-        'blob': 'blob 7s infinite', // New floating blob animation
       },
       keyframes: {
         fadeInUp: {
@@ -37,12 +35,6 @@ module.exports = {
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
-        },
-        blob: {
-          '0%': { transform: 'translate(0px, 0px) scale(1)' },
-          '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-          '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-          '100%': { transform: 'translate(0px, 0px) scale(1)' },
         }
       }
     },

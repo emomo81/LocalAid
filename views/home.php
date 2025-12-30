@@ -1,41 +1,25 @@
 <!-- Hero Section -->
 <header class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-    <!-- Animated Background Blobs -->
-    <div
-        class="absolute top-0 left-1/2 w-96 h-96 bg-cyan-500/30 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob -translate-x-1/2">
-    </div>
-    <div
-        class="absolute top-0 right-1/4 w-96 h-96 bg-purple-500/30 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000">
-    </div>
-    <div
-        class="absolute -bottom-32 left-1/4 w-96 h-96 bg-blue-500/30 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000">
-    </div>
-
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center animate-fade-in">
-        <h1 class="text-5xl sm:text-7xl font-extrabold tracking-tight mb-8 leading-tight font-display">
+        <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
             Liberia's #1 Home Services <br />
-            <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 drop-shadow-sm">Fast,
-                Reliable, &
+            <span class="bg-clip-text text-transparent bg-gradient-to-r from-teal-300 to-blue-500">Fast, Reliable, &
                 Local.</span>
         </h1>
-        <p class="mt-4 text-xl sm:text-2xl text-gray-300 max-w-2xl mx-auto mb-12 font-light">
-            Connect with trusted professionals in Monrovia, Paynesville, and beyond.
+        <p class="mt-4 text-xl text-gray-300 max-w-2xl mx-auto mb-10">
+            Connect with trusted professionals in Monrovia, Paynesville, and beyond. From cleaning to repairs, we've got
+            you covered.
         </p>
 
         <!-- Search Bar -->
         <form action="index.php" method="GET"
-            class="max-w-3xl mx-auto glass p-2 rounded-full flex items-center shadow-2xl border border-white/20 backdrop-blur-xl relative overflow-hidden group hover:border-white/40 transition">
-
-            <div
-                class="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition duration-500">
-            </div>
-
+            class="max-w-3xl mx-auto glass p-2 rounded-full flex items-center shadow-2xl">
             <input type="hidden" name="page" value="services">
-            <div class="flex-grow flex items-center px-6 border-r border-white/10 z-10">
-                <i class="fa-solid fa-location-dot text-cyan-400 mr-3 text-lg"></i>
+            <div class="flex-grow flex items-center px-4">
+                <i class="fa-solid fa-location-dot text-gray-400 mr-3"></i>
                 <select name="location"
-                    class="bg-transparent border-none focus:ring-0 text-white placeholder-gray-400 w-full cursor-pointer font-medium appearance-none">
-                    <option value="" class="bg-gray-900 text-gray-400">Select County</option>
+                    class="bg-transparent border-none focus:ring-0 text-white placeholder-gray-400 w-full cursor-pointer">
+                    <option value="" class="bg-gray-800 text-gray-500">Select County</option>
                     <?php
                     $counties = [
                         'Bomi',
@@ -55,21 +39,20 @@
                         'Sinoe'
                     ];
                     foreach ($counties as $c) {
-                        echo "<option value='$c' class='bg-gray-900'>$c</option>";
+                        echo "<option value='$c' class='bg-gray-800'>$c</option>";
                     }
                     ?>
                 </select>
-                <i class="fa-solid fa-chevron-down text-gray-500 text-xs ml-2"></i>
             </div>
-
-            <div class="flex-grow flex items-center px-6 z-10">
-                <i class="fa-solid fa-magnifying-glass text-cyan-400 mr-3 text-lg"></i>
+            <div class="h-8 w-px bg-gray-600 mx-2"></div>
+            <div class="flex-grow flex items-center px-4">
+                <i class="fa-solid fa-magnifying-glass text-gray-400 mr-3"></i>
                 <input type="text" name="q" placeholder="What help do you need?"
-                    class="bg-transparent border-none focus:ring-0 text-white placeholder-gray-400 w-full font-medium">
+                    class="bg-transparent border-none focus:ring-0 text-white placeholder-gray-400 w-full">
             </div>
             <button type="submit"
-                class="z-10 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white rounded-full h-14 w-14 flex items-center justify-center shadow-lg shadow-cyan-500/30 transition transform hover:scale-105">
-                <i class="fa-solid fa-arrow-right text-xl"></i>
+                class="bg-gradient-to-r from-primary-600 to-secondary text-white rounded-full h-12 w-12 flex items-center justify-center hover:scale-105 transition transform shadow-lg">
+                <i class="fa-solid fa-arrow-right"></i>
             </button>
         </form>
     </div>

@@ -1,59 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;700;800&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   body {
-    @apply font-sans antialiased text-gray-100 bg-gray-900 selection:bg-cyan-500 selection:text-white;
-    background-image:
-      radial-gradient(at 0% 0%, rgba(17, 24, 39, 1) 0, transparent 50%),
-      radial-gradient(at 50% 0%, rgba(13, 148, 136, 0.15) 0, transparent 50%),
-      radial-gradient(at 100% 0%, rgba(15, 23, 42, 1) 0, transparent 50%);
-    background-attachment: fixed;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-display tracking-tight;
+    @apply font-sans antialiased text-gray-800 bg-gray-50;
   }
 }
 
-@layer components {
-
-  /* Ultra-Glass */
-  .glass {
-    @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-xl;
-  }
-
-  .glass-card {
-    @apply glass rounded-2xl p-6 transition-all duration-300 hover:bg-white/10 hover:border-white/20 hover:shadow-2xl hover:-translate-y-1;
-  }
-
-  /* Neon Buttons */
-  .btn {
-    @apply px-6 py-3 rounded-xl font-bold tracking-wide transition-all duration-300 transform active:scale-95 flex items-center justify-center gap-2 relative overflow-hidden;
-  }
-
-  .btn-primary {
-    @apply bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/30 hover:shadow-cyan-500/50 hover:brightness-110 border border-white/10;
-  }
-
-  .btn-secondary {
-    @apply bg-white/5 text-white hover:bg-white/10 border border-white/10 hover:border-white/30 backdrop-blur-md;
-  }
-
-  .btn-danger {
-    @apply bg-red-500/10 text-red-200 border border-red-500/30 hover:bg-red-500/20 hover:text-red-100 hover:border-red-500/50;
-  }
-
-  /* Modern Inputs */
-  .input-field {
-    @apply w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all backdrop-blur-sm shadow-inner;
-  }
+.glass {
+  @apply bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg border border-white border-opacity-30 shadow-lg;
 }

@@ -79,7 +79,8 @@ $categories_stmt = $category->readAll();
                 <i class="fa-solid fa-crosshairs"></i>
             </button>
 
-            <button type="submit" class="btn btn-primary w-full md:w-auto">
+            <button type="submit"
+                class="bg-gradient-to-r from-primary-600 to-secondary hover:bg-opacity-90 text-white font-bold py-2 px-6 rounded-lg w-full md:w-auto shadow-lg transition">
                 Search
             </button>
         </form>
@@ -141,10 +142,7 @@ $categories_stmt = $category->readAll();
                                     class="h-8 w-8 rounded-full bg-gradient-to-r from-primary-600 to-secondary flex items-center justify-center mr-2 text-xs font-bold text-white">
                                     <?php echo strtoupper(substr($row['provider_name'], 0, 1)); ?>
                                 </div>
-                                <span class="mr-1"><?php echo htmlspecialchars($row['provider_name']); ?></span>
-                                <?php if (!empty($row['is_verified'])): ?>
-                                    <i class="fa-solid fa-circle-check text-blue-400 text-xs" title="Verified Provider"></i>
-                                <?php endif; ?>
+                                <span><?php echo htmlspecialchars($row['provider_name']); ?></span>
                             </div>
                             <div class="text-gray-400 flex items-center">
                                 <i class="fa-solid fa-map-marker-alt mr-1"></i>

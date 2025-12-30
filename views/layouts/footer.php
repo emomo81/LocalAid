@@ -4,7 +4,6 @@
     &copy; <?php echo date("Y"); ?> LocalAid. All rights reserved.
 </footer>
 
-<script src="js/app.js"></script>
 </body>
 
 </html>
