@@ -197,134 +197,148 @@ $categories_stmt = $category->readAll();
                         </select>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-1">Service Title</label>
-                        <input type="text" name="title" required placeholder="e.g. Professional Home Cleaning"
-                            class="w-full bg-white/5 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-teal-500 focus:border-teal-500">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-1">Description</label>
-                        <textarea name="description" rows="3" required placeholder="Describe what you offer..."
-                            class="w-full bg-white/5 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-teal-500 focus:border-teal-500"></textarea>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-1">Price (USD)</label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-2 text-gray-400">$</span>
-                                <input type="number" name="price" required step="0.01"
-                                    class="w-full bg-white/5 border border-gray-600 rounded-lg pl-8 pr-4 py-2 text-white focus:ring-teal-500 focus:border-teal-500">
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Service Title</label>
+                            <input type="text" name="title" required placeholder="e.g. Professional Home Cleaning"
+                                class="input-field">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Description</label>
+                            <textarea name="description" rows="3" required placeholder="Describe what you offer..."
+                                class="input-field"></textarea>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-1">Price (USD)</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-3 text-gray-400">$</span>
+                                    <input type="number" name="price" required step="0.01" class="input-field pl-8">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-300 mb-1">County / Location</label>
+                                <select id="locationSelect" name="location" required class="input-field cursor-pointer">
+                                    <option value="" class="bg-gray-800" disabled selected>Select County</option>
+                                    <option value="Bomi" data-lat="6.7533" data-lng="-10.7633" class="bg-gray-800">Bomi
+                                    </option>
+                                    <option value="Bong" data-lat="6.8295" data-lng="-9.3673" class="bg-gray-800">Bong
+                                    </option>
+                                    <option value="Gbarpolu" data-lat="7.5000" data-lng="-10.5000" class="bg-gray-800">
+                                        Gbarpolu</option>
+                                    <option value="Grand Bassa" data-lat="6.2308" data-lng="-9.8125"
+                                        class="bg-gray-800">Grand Bassa</option>
+                                    <option value="Grand Cape Mount" data-lat="7.0500" data-lng="-11.0833"
+                                        class="bg-gray-800">Grand Cape Mount</option>
+                                    <option value="Grand Gedeh" data-lat="5.9167" data-lng="-8.2167"
+                                        class="bg-gray-800">Grand Gedeh</option>
+                                    <option value="Grand Kru" data-lat="4.7500" data-lng="-8.0000" class="bg-gray-800">
+                                        Grand Kru</option>
+                                    <option value="Lofa" data-lat="8.0000" data-lng="-9.7500" class="bg-gray-800">Lofa
+                                    </option>
+                                    <option value="Margibi" data-lat="6.5167" data-lng="-10.3000" class="bg-gray-800">
+                                        Margibi</option>
+                                    <option value="Maryland" data-lat="4.5000" data-lng="-7.7500" class="bg-gray-800">
+                                        Maryland</option>
+                                    <option value="Montserrado" data-lat="6.5000" data-lng="-10.5000"
+                                        class="bg-gray-800">Montserrado</option>
+                                    <option value="Nimba" data-lat="6.8333" data-lng="-8.6667" class="bg-gray-800">Nimba
+                                    </option>
+                                    <option value="River Cess" data-lat="5.7500" data-lng="-9.2500" class="bg-gray-800">
+                                        River Cess</option>
+                                    <option value="River Gee" data-lat="5.2500" data-lng="-7.7500" class="bg-gray-800">
+                                        River Gee</option>
+                                    <option value="Sinoe" data-lat="5.5000" data-lng="-8.8333" class="bg-gray-800">Sinoe
+                                    </option>
+                                </select>
                             </div>
                         </div>
+
+                        <!-- Map Picker -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-1">County / Location</label>
-                            <select id="locationSelect" name="location" required
-                                class="w-full bg-white/5 border border-gray-600 rounded-lg px-4 py-2 text-white focus:ring-teal-500 focus:border-teal-500">
-                                <option value="" class="bg-gray-800" disabled selected>Select County</option>
-                                <option value="Bomi" data-lat="6.7533" data-lng="-10.7633" class="bg-gray-800">Bomi</option>
-                                <option value="Bong" data-lat="6.8295" data-lng="-9.3673" class="bg-gray-800">Bong</option>
-                                <option value="Gbarpolu" data-lat="7.5000" data-lng="-10.5000" class="bg-gray-800">Gbarpolu</option>
-                                <option value="Grand Bassa" data-lat="6.2308" data-lng="-9.8125" class="bg-gray-800">Grand Bassa</option>
-                                <option value="Grand Cape Mount" data-lat="7.0500" data-lng="-11.0833" class="bg-gray-800">Grand Cape Mount</option>
-                                <option value="Grand Gedeh" data-lat="5.9167" data-lng="-8.2167" class="bg-gray-800">Grand Gedeh</option>
-                                <option value="Grand Kru" data-lat="4.7500" data-lng="-8.0000" class="bg-gray-800">Grand Kru</option>
-                                <option value="Lofa" data-lat="8.0000" data-lng="-9.7500" class="bg-gray-800">Lofa</option>
-                                <option value="Margibi" data-lat="6.5167" data-lng="-10.3000" class="bg-gray-800">Margibi</option>
-                                <option value="Maryland" data-lat="4.5000" data-lng="-7.7500" class="bg-gray-800">Maryland</option>
-                                <option value="Montserrado" data-lat="6.5000" data-lng="-10.5000" class="bg-gray-800">Montserrado</option>
-                                <option value="Nimba" data-lat="6.8333" data-lng="-8.6667" class="bg-gray-800">Nimba</option>
-                                <option value="River Cess" data-lat="5.7500" data-lng="-9.2500" class="bg-gray-800">River Cess</option>
-                                <option value="River Gee" data-lat="5.2500" data-lng="-7.7500" class="bg-gray-800">River Gee</option>
-                                <option value="Sinoe" data-lat="5.5000" data-lng="-8.8333" class="bg-gray-800">Sinoe</option>
-                            </select>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">Pin Exact Location (Drag
+                                Marker)</label>
+                            <div id="map" class="h-64 rounded-lg border border-gray-600 w-full z-0"></div>
+                            <p class="text-xs text-gray-400 mt-1">Drag the marker to your precise location.</p>
                         </div>
-                    </div>
 
-                    <!-- Map Picker -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-1">Pin Exact Location (Drag
-                            Marker)</label>
-                        <div id="map" class="h-64 rounded-lg border border-gray-600 w-full z-0"></div>
-                        <p class="text-xs text-gray-400 mt-1">Drag the marker to your precise location.</p>
-                    </div>
+                        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+                            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+                        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+                            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
-                    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-                        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
-                    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-                        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                // Default: center of greater Monrovia
+                                var defaultLat = 6.3156;
+                                var defaultLng = -10.8074;
 
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function () {
-                            // Default: center of greater Monrovia
-                            var defaultLat = 6.3156;
-                            var defaultLng = -10.8074;
+                                var map = L.map('map').setView([defaultLat, defaultLng], 12);
 
-                            var map = L.map('map').setView([defaultLat, defaultLng], 12);
+                                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                    maxZoom: 19,
+                                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                                }).addTo(map);
 
-                            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                                maxZoom: 19,
-                                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                            }).addTo(map);
+                                var marker = L.marker([defaultLat, defaultLng], { draggable: true }).addTo(map);
+                                var latInput = document.getElementById('latitude');
+                                var lngInput = document.getElementById('longitude');
+                                var locSelect = document.getElementById('locationSelect');
 
-                            var marker = L.marker([defaultLat, defaultLng], { draggable: true }).addTo(map);
-                            var latInput = document.getElementById('latitude');
-                            var lngInput = document.getElementById('longitude');
-                            var locSelect = document.getElementById('locationSelect');
-
-                            // Update inputs on drag
-                            function updatePosition(lat, lng) {
-                                latInput.value = lat;
-                                lngInput.value = lng;
-                            }
-
-                            // 1. Try to get user's current location immediately
-                            if (navigator.geolocation) {
-                                console.log("Requesting geolocation...");
-                                navigator.geolocation.getCurrentPosition(
-                                    function (position) {
-                                        var userLat = position.coords.latitude;
-                                        var userLng = position.coords.longitude;
-
-                                        var newLatLng = new L.LatLng(userLat, userLng);
-                                        marker.setLatLng(newLatLng);
-                                        map.setView(newLatLng, 15); // Zoom in closer
-                                        updatePosition(userLat, userLng);
-
-                                        console.log("Location detected:", userLat, userLng);
-                                    },
-                                    function (error) {
-                                        console.warn("Geolocation denied or error:", error.message);
-                                    }
-                                );
-                            }
-
-                            marker.on('dragend', function (e) {
-                                var position = marker.getLatLng();
-                                updatePosition(position.lat, position.lng);
-                            });
-
-                            // Update map center when dropdown changes
-                            locSelect.addEventListener('change', function () {
-                                var selectedOption = this.options[this.selectedIndex];
-                                var lat = parseFloat(selectedOption.getAttribute('data-lat'));
-                                var lng = parseFloat(selectedOption.getAttribute('data-lng'));
-
-                                if (lat && lng) {
-                                    var newLatLng = new L.LatLng(lat, lng);
-                                    marker.setLatLng(newLatLng);
-                                    map.panTo(newLatLng);
-                                    updatePosition(lat, lng);
+                                // Update inputs on drag
+                                function updatePosition(lat, lng) {
+                                    latInput.value = lat;
+                                    lngInput.value = lng;
                                 }
-                            });
-                        });
-                    </script>
 
-                    <button type="submit"
-                        class="w-full bg-gradient-to-r from-primary-600 to-secondary text-white font-bold py-3 rounded-lg shadow-lg hover:scale-[1.02] transition transform">
-                        Post Service
-                    </button>
+                                // 1. Try to get user's current location immediately
+                                if (navigator.geolocation) {
+                                    console.log("Requesting geolocation...");
+                                    navigator.geolocation.getCurrentPosition(
+                                        function (position) {
+                                            var userLat = position.coords.latitude;
+                                            var userLng = position.coords.longitude;
+
+                                            var newLatLng = new L.LatLng(userLat, userLng);
+                                            marker.setLatLng(newLatLng);
+                                            map.setView(newLatLng, 15); // Zoom in closer
+                                            updatePosition(userLat, userLng);
+
+                                            console.log("Location detected:", userLat, userLng);
+                                        },
+                                        function (error) {
+                                            console.warn("Geolocation denied or error:", error.message);
+                                        }
+                                    );
+                                }
+
+                                marker.on('dragend', function (e) {
+                                    var position = marker.getLatLng();
+                                    updatePosition(position.lat, position.lng);
+                                });
+
+                                // Update map center when dropdown changes
+                                locSelect.addEventListener('change', function () {
+                                    var selectedOption = this.options[this.selectedIndex];
+                                    var lat = parseFloat(selectedOption.getAttribute('data-lat'));
+                                    var lng = parseFloat(selectedOption.getAttribute('data-lng'));
+
+                                    if (lat && lng) {
+                                        var newLatLng = new L.LatLng(lat, lng);
+                                        marker.setLatLng(newLatLng);
+                                        map.panTo(newLatLng);
+                                        updatePosition(lat, lng);
+                                    }
+                                });
+                            });
+                        </script>
+
+                        <button type="submit"
+                            class="w-full bg-gradient-to-r from-primary-600 to-secondary text-white font-bold py-3 rounded-lg shadow-lg hover:scale-[1.02] transition transform">
+                            Post Service
+                        </button>
                 </form>
             </div>
 

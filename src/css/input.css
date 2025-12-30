@@ -8,6 +8,32 @@
   }
 }
 
-.glass {
-  @apply bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg border border-white border-opacity-30 shadow-lg;
+@layer components {
+  .glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/10 shadow-xl;
+  }
+
+  .glass-card {
+    @apply glass rounded-2xl p-6 transition-all duration-300;
+  }
+
+  .btn {
+    @apply px-6 py-3 rounded-xl font-semibold shadow-lg transition-all duration-300 transform active:scale-95 flex items-center justify-center gap-2;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-teal-500 to-emerald-600 text-white hover:from-teal-400 hover:to-emerald-500 hover:shadow-emerald-500/30;
+  }
+
+  .btn-secondary {
+    @apply bg-white/10 text-white hover:bg-white/20 border border-white/20 hover:border-white/30;
+  }
+
+  .btn-danger {
+    @apply bg-red-500/20 text-red-200 border border-red-500/30 hover:bg-red-500/30 hover:text-white hover:border-red-500/50;
+  }
+
+  .input-field {
+    @apply w-full bg-white/5 border border-gray-600 rounded-xl px-4 py-3 text-white placeholder-gray-400 focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all;
+  }
 }

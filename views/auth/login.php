@@ -45,18 +45,16 @@ if ($_POST) {
 
         <form class="mt-8 space-y-6" action="index.php?page=login" method="POST">
             <input type="hidden" name="remember" value="true">
-            <div class="rounded-md shadow-sm -space-y-px">
+            <div class="space-y-4">
                 <div>
                     <label for="email-address" class="sr-only">Email address</label>
                     <input id="email-address" name="email" type="email" autocomplete="email" required
-                        class="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-600 bg-white/10 placeholder-gray-400 text-white rounded-t-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 focus:z-10 sm:text-sm backdrop-blur-sm"
-                        placeholder="Email address">
+                        class="input-field" placeholder="Email address">
                 </div>
                 <div>
                     <label for="password" class="sr-only">Password</label>
                     <input id="password" name="password" type="password" autocomplete="current-password" required
-                        class="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-600 bg-white/10 placeholder-gray-400 text-white rounded-b-md focus:outline-none focus:ring-teal-500 focus:border-teal-500 focus:z-10 sm:text-sm backdrop-blur-sm"
-                        placeholder="Password">
+                        class="input-field" placeholder="Password">
                 </div>
             </div>
 
@@ -77,10 +75,9 @@ if ($_POST) {
             </div>
 
             <div>
-                <button type="submit"
-                    class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-primary-600 to-secondary hover:from-primary-700 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition shadow-lg">
+                <button type="submit" class="btn btn-primary w-full group relative">
                     <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-                        <i class="fa-solid fa-lock text-primary-200 group-hover:text-white transition"></i>
+                        <i class="fa-solid fa-lock text-white/50 group-hover:text-white transition"></i>
                     </span>
                     Sign in
                 </button>

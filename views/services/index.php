@@ -79,8 +79,7 @@ $categories_stmt = $category->readAll();
                 <i class="fa-solid fa-crosshairs"></i>
             </button>
 
-            <button type="submit"
-                class="bg-gradient-to-r from-primary-600 to-secondary hover:bg-opacity-90 text-white font-bold py-2 px-6 rounded-lg w-full md:w-auto shadow-lg transition">
+            <button type="submit" class="btn btn-primary w-full md:w-auto">
                 Search
             </button>
         </form>

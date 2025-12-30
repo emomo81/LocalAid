@@ -50,8 +50,7 @@
                 <input type="text" name="q" placeholder="What help do you need?"
                     class="bg-transparent border-none focus:ring-0 text-white placeholder-gray-400 w-full">
             </div>
-            <button type="submit"
-                class="bg-gradient-to-r from-primary-600 to-secondary text-white rounded-full h-12 w-12 flex items-center justify-center hover:scale-105 transition transform shadow-lg">
+            <button type="submit" class="btn btn-primary rounded-full h-12 w-12 !p-0">
                 <i class="fa-solid fa-arrow-right"></i>
             </button>
         </form>
