@@ -335,8 +335,7 @@ $categories_stmt = $category->readAll();
                             });
                         </script>
 
-                        <button type="submit"
-                            class="w-full bg-gradient-to-r from-primary-600 to-secondary text-white font-bold py-3 rounded-lg shadow-lg hover:scale-[1.02] transition transform">
+                        <button type="submit" class="btn btn-primary w-full shadow-lg">
                             Post Service
                         </button>
                 </form>
