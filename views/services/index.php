@@ -8,9 +8,11 @@ $category = new Category($db);
 // Get Filters
 $keywords = isset($_GET['q']) ? $_GET['q'] : null;
 $location_filter = isset($_GET['location']) ? $_GET['location'] : null;
+$lat = isset($_GET['lat']) ? $_GET['lat'] : null;
+$lng = isset($_GET['lng']) ? $_GET['lng'] : null;
 
 // Fetch filtered services
-$services_stmt = $service->readAll($keywords, $location_filter);
+$services_stmt = $service->readAll($keywords, $location_filter, $lat, $lng);
 
 // Fetch categories for filter (future enhancement)
 $categories_stmt = $category->readAll();
@@ -24,9 +26,12 @@ $categories_stmt = $category->readAll();
         <p class="text-gray-300 max-w-2xl mx-auto">Browse trusted service providers in your area ready to help you.</p>
 
         <!-- Functional Filter Bar -->
-        <form action="index.php" method="GET"
+        <form action="index.php" method="GET" id="searchForm"
             class="mt-8 max-w-4xl mx-auto glass p-2 rounded-lg flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4">
             <input type="hidden" name="page" value="services">
+            <input type="hidden" name="lat" id="latInput" value="<?php echo htmlspecialchars($lat ?? ''); ?>">
+            <input type="hidden" name="lng" id="lngInput" value="<?php echo htmlspecialchars($lng ?? ''); ?>">
+
             <div
                 class="flex-grow w-full md:w-auto px-4 py-2 border-b md:border-b-0 md:border-r border-gray-600 flex items-center">
                 <i class="fa-solid fa-search text-gray-400 mr-2"></i>
@@ -34,6 +39,7 @@ $categories_stmt = $category->readAll();
                     placeholder="Search for 'Cleaning'..."
                     class="bg-transparent border-none text-white focus:ring-0 w-full placeholder-gray-400">
             </div>
+
             <div
                 class="flex-grow w-full md:w-auto px-4 py-2 border-b md:border-b-0 md:border-r border-gray-600 flex items-center">
                 <i class="fa-solid fa-location-dot text-gray-400 mr-2"></i>
@@ -41,14 +47,38 @@ $categories_stmt = $category->readAll();
                     class="bg-transparent border-none text-white focus:ring-0 w-full cursor-pointer">
                     <option value="" class="bg-gray-800 text-gray-300">All Locations</option>
                     <?php
-                    $locations = ['Monrovia', 'Paynesville', 'Sinkor', 'Congo Town', 'Bushrod Island'];
-                    foreach ($locations as $loc) {
-                        $selected = ($location_filter == $loc) ? 'selected' : '';
-                        echo "<option value='$loc' class='bg-gray-800' $selected>$loc</option>";
+                    $counties = [
+                        'Bomi',
+                        'Bong',
+                        'Gbarpolu',
+                        'Grand Bassa',
+                        'Grand Cape Mount',
+                        'Grand Gedeh',
+                        'Grand Kru',
+                        'Lofa',
+                        'Margibi',
+                        'Maryland',
+                        'Montserrado',
+                        'Nimba',
+                        'River Cess',
+                        'River Gee',
+                        'Sinoe'
+                    ];
+                    foreach ($counties as $c) {
+                        $selected = ($location_filter == $c) ? 'selected' : '';
+                        echo "<option value='$c' class='bg-gray-800' $selected>$c</option>";
                     }
                     ?>
                 </select>
             </div>
+
+            <!-- Locator Button -->
+            <button type="button" id="geoBtn" onclick="getLocation()"
+                class="bg-teal-500/20 hover:bg-teal-500/30 text-teal-300 p-2 rounded-lg transition"
+                title="Use My Location">
+                <i class="fa-solid fa-crosshairs"></i>
+            </button>
+
             <button type="submit"
                 class="bg-gradient-to-r from-primary-600 to-secondary hover:bg-opacity-90 text-white font-bold py-2 px-6 rounded-lg w-full md:w-auto shadow-lg transition">
                 Search
@@ -81,6 +111,17 @@ $categories_stmt = $category->readAll();
                                 <?php echo htmlspecialchars($row['category_name']); ?>
                             </span>
                         </div>
+
+                        <!-- Distance Badge if Lat/Lng present -->
+                        <?php if (isset($row['distance'])): ?>
+                            <div class="absolute top-4 right-4 z-10">
+                                <span
+                                    class="bg-gray-900/80 text-teal-400 px-3 py-1 rounded-full text-xs font-bold border border-teal-500/30 backdrop-blur-md flex items-center">
+                                    <i class="fa-solid fa-location-arrow mr-1"></i>
+                                    <?php echo number_format($row['distance'], 1); ?> km
+                                </span>
+                            </div>
+                        <?php endif; ?>
                     </div>
 
                     <div class="p-6 flex-grow flex flex-col">
@@ -132,3 +173,45 @@ $categories_stmt = $category->readAll();
     </div>
 
 </div>
+
+<script>
+    function getLocation() {
+        if (navigator.geolocation) {
+            // Show loading state on button
+            const btn = document.getElementById('geoBtn');
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+            navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+
+    function showPosition(position) {
+        document.getElementById("latInput").value = position.coords.latitude;
+        document.getElementById("lngInput").value = position.coords.longitude;
+        // Auto submit to sort
+        document.getElementById("searchForm").submit();
+    }
+
+    function showError(error) {
+        const btn = document.getElementById('geoBtn');
+        btn.innerHTML = '<i class="fa-solid fa-crosshairs"></i>'; // Reset icon
+
+        switch (error.code) {
+            case error.PERMISSION_DENIED:
+                alert("User denied the request for Geolocation.");
+                break;
+            case error.POSITION_UNAVAILABLE:
+                alert("Location information is unavailable.");
+                break;
+            case error.TIMEOUT:
+                alert("The request to get user location timed out.");
+                break;
+            case error.UNKNOWN_ERROR:
+                alert("An unknown error occurred.");
+                break;
+        }
+    }
+</script>

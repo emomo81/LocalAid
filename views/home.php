@@ -17,8 +17,32 @@
             <input type="hidden" name="page" value="services">
             <div class="flex-grow flex items-center px-4">
                 <i class="fa-solid fa-location-dot text-gray-400 mr-3"></i>
-                <input type="text" name="location" placeholder="e.g. Sinkor, Monrovia"
-                    class="bg-transparent border-none focus:ring-0 text-white placeholder-gray-400 w-full">
+                <select name="location"
+                    class="bg-transparent border-none focus:ring-0 text-white placeholder-gray-400 w-full cursor-pointer">
+                    <option value="" class="bg-gray-800 text-gray-500">Select County</option>
+                    <?php
+                    $counties = [
+                        'Bomi',
+                        'Bong',
+                        'Gbarpolu',
+                        'Grand Bassa',
+                        'Grand Cape Mount',
+                        'Grand Gedeh',
+                        'Grand Kru',
+                        'Lofa',
+                        'Margibi',
+                        'Maryland',
+                        'Montserrado',
+                        'Nimba',
+                        'River Cess',
+                        'River Gee',
+                        'Sinoe'
+                    ];
+                    foreach ($counties as $c) {
+                        echo "<option value='$c' class='bg-gray-800'>$c</option>";
+                    }
+                    ?>
+                </select>
             </div>
             <div class="h-8 w-px bg-gray-600 mx-2"></div>
             <div class="flex-grow flex items-center px-4">

@@ -11,6 +11,8 @@ class Service
     public $description;
     public $price;
     public $location;
+    public $latitude;
+    public $longitude;
     public $image_url;
     public $created_at;
 
@@ -20,6 +22,7 @@ class Service
     public $category_icon;
     public $category_color;
     public $category_bg;
+    public $distance; // Calculated field
 
     public function __construct($db)
     {
@@ -30,8 +33,8 @@ class Service
     public function create()
     {
         $query = "INSERT INTO " . $this->table_name . " 
-                (provider_id, category_id, title, description, price, location, image_url) 
-                VALUES (:provider_id, :category_id, :title, :description, :price, :location, :image_url)";
+                (provider_id, category_id, title, description, price, location, latitude, longitude, image_url) 
+                VALUES (:provider_id, :category_id, :title, :description, :price, :location, :latitude, :longitude, :image_url)";
 
         $stmt = $this->conn->prepare($query);
 
@@ -40,6 +43,8 @@ class Service
         $this->description = htmlspecialchars(strip_tags($this->description));
         $this->price = htmlspecialchars(strip_tags($this->price));
         $this->location = htmlspecialchars(strip_tags($this->location));
+        $this->latitude = htmlspecialchars(strip_tags($this->latitude));
+        $this->longitude = htmlspecialchars(strip_tags($this->longitude));
         $this->image_url = htmlspecialchars(strip_tags($this->image_url));
 
         // Bind
@@ -49,6 +54,8 @@ class Service
         $stmt->bindParam(":description", $this->description);
         $stmt->bindParam(":price", $this->price);
         $stmt->bindParam(":location", $this->location);
+        $stmt->bindParam(":latitude", $this->latitude);
+        $stmt->bindParam(":longitude", $this->longitude);
         $stmt->bindParam(":image_url", $this->image_url);
 
         if ($stmt->execute()) {
@@ -57,13 +64,23 @@ class Service
         return false;
     }
 
-    // Read all services with filtering
-    public function readAll($keywords = null, $location = null)
+    // Read all services with filtering and location sorting
+    public function readAll($keywords = null, $location = null, $userLat = null, $userLng = null)
     {
-        $query = "SELECT 
-                    s.id, s.title, s.description, s.price, s.location, s.image_url, s.created_at,
-                    c.name as category_name, c.icon_class as category_icon, c.color_class as category_color, c.bg_color_class as category_bg,
-                    u.username as provider_name
+        $select = "s.id, s.title, s.description, s.price, s.location, s.image_url, s.created_at, s.latitude, s.longitude,
+                   c.name as category_name, c.icon_class as category_icon, c.color_class as category_color, c.bg_color_class as category_bg,
+                   u.username as provider_name";
+
+        $order = "s.created_at DESC";
+
+        // Haversine Formula for Distance (in km)
+        if ($userLat && $userLng) {
+            $select .= ", ( 6371 * acos( cos( radians(:lat) ) * cos( radians( s.latitude ) ) * cos( radians( s.longitude ) - radians(:lng) ) + sin( radians(:lat) ) * sin( radians( s.latitude ) ) ) ) AS distance";
+            // Sort by distance first, then newness
+            $order = "distance ASC, s.created_at DESC";
+        }
+
+        $query = "SELECT " . $select . "
                   FROM " . $this->table_name . " s
                   LEFT JOIN categories c ON s.category_id = c.id
                   LEFT JOIN users u ON s.provider_id = u.id
@@ -76,7 +93,7 @@ class Service
             $query .= " AND s.location LIKE :location";
         }
 
-        $query .= " ORDER BY s.created_at DESC";
+        $query .= " ORDER BY " . $order;
 
         $stmt = $this->conn->prepare($query);
 
@@ -88,6 +105,10 @@ class Service
             $location = "%{$location}%";
             $stmt->bindParam(':location', $location);
         }
+        if ($userLat && $userLng) {
+            $stmt->bindParam(':lat', $userLat);
+            $stmt->bindParam(':lng', $userLng);
+        }
 
         $stmt->execute();
         return $stmt;
@@ -97,7 +118,7 @@ class Service
     public function readByProvider($provider_id)
     {
         $query = "SELECT 
-                    s.id, s.title, s.description, s.price, s.location, s.created_at,
+                    s.id, s.title, s.description, s.price, s.location, s.created_at, s.latitude, s.longitude,
                     c.name as category_name
                   FROM " . $this->table_name . " s
                   LEFT JOIN categories c ON s.category_id = c.id
