@@ -14,8 +14,39 @@ $category = new Category($db);
 $booking = new Booking($db);
 $msg = "";
 
+
+// Fetch user profile for verification status
+require_once '../src/models/User.php';
+$userModel = new User($db);
+$userModel->id = $_SESSION['user_id'];
+$userProfile = $userModel->getProfile();
+
 // Handle Form Submit
 if ($_POST) {
+    // Handle Verification Request
+    if (isset($_POST['submit_verification'])) {
+        if (!empty($_FILES['doc']['name'])) {
+            $target_dir = "../public/uploads/docs/";
+            if (!file_exists($target_dir)) {
+                mkdir($target_dir, 0777, true);
+            }
+            $filename = time() . "_" . basename($_FILES["doc"]["name"]);
+            $target_file = $target_dir . $filename;
+
+            if (move_uploaded_file($_FILES["doc"]["tmp_name"], $target_file)) {
+                if ($userModel->submitVerification($_SESSION['user_id'], "uploads/docs/" . $filename)) {
+                    // Refresh profile
+                    $userProfile = $userModel->getProfile();
+                    $msg = "<div class='bg-green-500/20 text-green-100 p-3 rounded mb-4'>Verification submitted! Admin will review shortly.</div>";
+                } else {
+                    $msg = "<div class='bg-red-500/20 text-red-100 p-3 rounded mb-4'>Database error.</div>";
+                }
+            } else {
+                $msg = "<div class='bg-red-500/20 text-red-100 p-3 rounded mb-4'>File upload failed.</div>";
+            }
+        }
+    }
+
     // Create Service
     if (isset($_POST['create_service'])) {
         $service->provider_id = $_SESSION['user_id'];
@@ -24,6 +55,8 @@ if ($_POST) {
         $service->description = $_POST['description'];
         $service->price = $_POST['price'];
         $service->location = $_POST['location'];
+        $service->latitude = $_POST['latitude']; // Save latitude
+        $service->longitude = $_POST['longitude']; // Save longitude
 
         // Handle Image Upload
         if (!empty($_FILES['image']['name'])) {
@@ -68,8 +101,6 @@ $my_services = $service->readByProvider($_SESSION['user_id']);
 $incoming_requests = $booking->getByProvider($_SESSION['user_id']);
 
 // Fetch categories for dropdown
-
-// Fetch categories for dropdown
 $categories_stmt = $category->readAll();
 ?>
 
@@ -81,8 +112,12 @@ $categories_stmt = $category->readAll();
             <div class="glass rounded-xl p-6">
                 <div class="flex items-center space-x-4 mb-6">
                     <div
-                        class="h-16 w-16 bg-gradient-to-br from-primary-500 to-secondary rounded-full flex items-center justify-center text-2xl font-bold">
+                        class="h-16 w-16 bg-gradient-to-br from-primary-500 to-secondary rounded-full flex items-center justify-center text-2xl font-bold relative">
                         <?php echo strtoupper(substr($_SESSION['username'], 0, 1)); ?>
+                        <?php if ($userProfile['is_verified']): ?>
+                            <i
+                                class="fa-solid fa-circle-check text-blue-400 absolute -bottom-1 -right-1 text-xl bg-gray-900 rounded-full border-2 border-gray-900"></i>
+                        <?php endif; ?>
                     </div>
                     <div>
                         <h2 class="text-xl font-bold text-white"><?php echo htmlspecialchars($_SESSION['username']); ?>
@@ -90,6 +125,33 @@ $categories_stmt = $category->readAll();
                         <span class="px-2 py-1 bg-teal-500/20 text-teal-300 text-xs rounded-full">Pro Provider</span>
                     </div>
                 </div>
+
+                <!-- Verification Status Box -->
+                <div class="mb-6 p-4 rounded-lg bg-white/5 border border-white/10">
+                    <h3 class="font-semibold text-sm mb-2 text-gray-300">Verification Status</h3>
+                    <?php if ($userProfile['is_verified']): ?>
+                        <div class="flex items-center text-green-400 text-sm font-bold">
+                            <i class="fa-solid fa-shield-halved mr-2"></i> Verified
+                        </div>
+                    <?php elseif ($userProfile['verification_status'] === 'pending'): ?>
+                        <div class="flex items-center text-amber-400 text-sm font-bold">
+                            <i class="fa-solid fa-clock mr-2"></i> Pending Review
+                        </div>
+                    <?php else: ?>
+                        <div class="flex items-center text-gray-400 text-sm mb-3">
+                            <i class="fa-solid fa-circle-xmark mr-2"></i> Unverified
+                        </div>
+                        <form action="" method="POST" enctype="multipart/form-data">
+                            <label class="block text-xs text-gray-400 mb-1">Upload ID/Business Doc:</label>
+                            <input type="file" name="doc" required class="text-xs text-gray-300 mb-2">
+                            <button type="submit" name="submit_verification"
+                                class="btn btn-primary w-full text-xs py-2 h-auto">
+                                Get Verified
+                            </button>
+                        </form>
+                    <?php endif; ?>
+                </div>
+
                 <hr class="border-gray-600 mb-4">
                 <nav class="space-y-2">
                     <a href="#" class="block px-4 py-2 bg-white/10 text-white rounded-lg font-medium">My Services</a>

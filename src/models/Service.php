@@ -69,7 +69,7 @@ class Service
     {
         $select = "s.id, s.title, s.description, s.price, s.location, s.image_url, s.created_at, s.latitude, s.longitude,
                    c.name as category_name, c.icon_class as category_icon, c.color_class as category_color, c.bg_color_class as category_bg,
-                   u.username as provider_name";
+                   u.username as provider_name, u.is_verified";
 
         $order = "s.created_at DESC";
 
