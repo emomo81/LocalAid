@@ -72,6 +72,58 @@
                     <a href="index.php?page=dashboard" class="hover:text-white transition">Dashboard</a>
                     <a href="index.php?page=chat" class="hover:text-white transition"><i
                             class="fa-regular fa-comments"></i></a>
+
+                    <!-- Notification Bell -->
+                    <?php
+                    // Fetch Notifications
+                    require_once(__DIR__ . '/../../src/models/Notification.php');
+                    // Assume $db connection is available globally or creating new
+                    // In typical MVC this is passed to view, but for header include we might need to lazy load if not set
+                    if (!isset($db)) {
+                        require_once(__DIR__ . '/../../config/database.php');
+                        $database = new Database();
+                        $db = $database->getConnection();
+                    }
+
+                    $notifModel = new Notification($db);
+                    $unreadCount = $notifModel->getUnreadCount($_SESSION['user_id']);
+                    $notifications = $notifModel->getUserNotifications($_SESSION['user_id'], 5);
+                    ?>
+                    <div class="relative group">
+                        <button class="hover:text-white transition relative">
+                            <i class="fa-regular fa-bell"></i>
+                            <?php if ($unreadCount > 0): ?>
+                                <span
+                                    class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                                    <?php echo $unreadCount; ?>
+                                </span>
+                            <?php endif; ?>
+                        </button>
+
+                        <!-- Dropdown -->
+                        <div
+                            class="absolute right-0 mt-2 w-64 glass rounded-xl shadow-xl hidden group-hover:block overflow-hidden z-50">
+                            <div class="p-3 border-b border-gray-700 font-semibold text-sm flex justify-between">
+                                <span>Notifications</span>
+                                <!--<a href="#" class="text-xs text-primary-400">Mark all read</a>-->
+                            </div>
+                            <div class="max-h-64 overflow-y-auto">
+                                <?php if ($notifications->rowCount() > 0): ?>
+                                    <?php while ($notif = $notifications->fetch(PDO::FETCH_ASSOC)): ?>
+                                        <a href="<?php echo $notif['link']; ?>"
+                                            class="block p-3 hover:bg-white/5 border-b border-gray-700/50 transition <?php echo !$notif['is_read'] ? 'bg-primary-900/20' : ''; ?>">
+                                            <p class="text-sm text-gray-200"><?php echo htmlspecialchars($notif['message']); ?></p>
+                                            <span
+                                                class="text-xs text-gray-500"><?php echo date('M j, g:i a', strtotime($notif['created_at'])); ?></span>
+                                        </a>
+                                    <?php endwhile; ?>
+                                <?php else: ?>
+                                    <div class="p-4 text-center text-gray-500 text-sm">No new notifications</div>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+
                     <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
                         <a href="index.php?page=admin" class="hover:text-amber-400 transition">Admin</a>
                     <?php endif; ?>

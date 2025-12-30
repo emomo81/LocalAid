@@ -46,6 +46,13 @@ class Booking
         $stmt->bindParam(":notes", $this->notes);
 
         if ($stmt->execute()) {
+            // Trigger Notification for Provider
+            require_once 'Notification.php';
+            $notification = new Notification($this->conn);
+            $msg = "You have a new booking request!";
+            $link = "index.php?page=dashboard";
+            $notification->create($this->provider_id, $msg, 'booking_request', $link);
+
             return true;
         }
         return false;
@@ -100,6 +107,20 @@ class Booking
         $stmt->bindParam(':id', $id);
 
         if ($stmt->execute()) {
+            // Get booking details to notify customer
+            $checkQuery = "SELECT customer_id, service_id, s.title FROM bookings b JOIN services s ON b.service_id = s.id WHERE b.id = ?";
+            $checkStmt = $this->conn->prepare($checkQuery);
+            $checkStmt->bindParam(1, $id);
+            $checkStmt->execute();
+
+            if ($row = $checkStmt->fetch(PDO::FETCH_ASSOC)) {
+                require_once 'Notification.php';
+                $notification = new Notification($this->conn);
+                $msg = "Your booking for '{$row['title']}' has been " . $status . ".";
+                $link = "index.php?page=dashboard"; // Or maybe specific booking view
+                $notification->create($row['customer_id'], $msg, 'booking_update', $link);
+            }
+
             return true;
         }
         return false;
