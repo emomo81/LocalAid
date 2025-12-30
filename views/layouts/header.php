@@ -14,13 +14,43 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            background-color: #EEF2FF;
+            /* Modern Deep Slate Theme */
+            background-color: #0f172a;
+            /* slate-900 */
             background-image:
-                radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%),
-                radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 1) 0, transparent 50%),
-                radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 1) 0, transparent 50%);
+                radial-gradient(at 0% 0%, hsla(222, 47%, 11%, 1) 0, transparent 50%),
+                radial-gradient(at 50% 0%, hsla(215, 27%, 15%, 1) 0, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(222, 47%, 13%, 1) 0, transparent 50%);
             background-attachment: fixed;
             min-height: 100vh;
+        }
+
+        /* Modern Glass Effect */
+        .glass {
+            background: rgba(30, 41, 59, 0.4);
+            /* slate-800 with opacity */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Scrollbar for Webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
         }
     </style>
 </head>
@@ -37,12 +67,18 @@
             <!-- Desktop Menu -->
             <div class="hidden md:flex space-x-8 text-sm font-medium text-gray-200">
                 <a href="index.php" class="hover:text-white transition">Home</a>
-                <a href="index.php#services" class="hover:text-white transition">Services</a>
-                <a href="index.php?page=register" class="hover:text-white transition">Become a Pro</a>
+                <a href="index.php?page=services" class="hover:text-white transition">Services</a>
                 <?php if (isset($_SESSION['user_id'])): ?>
+                    <a href="index.php?page=dashboard" class="hover:text-white transition">Dashboard</a>
+                    <a href="index.php?page=chat" class="hover:text-white transition"><i
+                            class="fa-regular fa-comments"></i></a>
+                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                        <a href="index.php?page=admin" class="hover:text-amber-400 transition">Admin</a>
+                    <?php endif; ?>
                     <span class="text-teal-400">Hi, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
                     <a href="index.php?page=logout" class="hover:text-red-400 transition">Logout</a>
                 <?php else: ?>
+                    <a href="index.php?page=register" class="hover:text-white transition">Become a Pro</a>
                     <a href="index.php?page=login" class="hover:text-white transition">Login</a>
                 <?php endif; ?>
             </div>

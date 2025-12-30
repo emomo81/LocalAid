@@ -23,9 +23,31 @@ try {
     $sql = file_get_contents(__DIR__ . '/../src/sql/schema.sql');
 
     // Execute Schema (Split by semicolon to execute one by one if needed, but PDO might handle it)
-    // PDO exec supports basic multiple statements if emulation is on, but safer to loop.
     $db->exec($sql);
-    echo "Tables created successfully.<br>";
+
+    // Manual Migrations for Profile
+    try {
+        $db->exec("ALTER TABLE users ADD COLUMN phone VARCHAR(20)");
+    } catch (Exception $e) {
+    }
+    try {
+        $db->exec("ALTER TABLE users ADD COLUMN bio TEXT");
+    } catch (Exception $e) {
+    }
+    try {
+        $db->exec("ALTER TABLE users ADD COLUMN location VARCHAR(100)");
+    } catch (Exception $e) {
+    }
+    try {
+        $db->exec("ALTER TABLE users ADD COLUMN avatar_url VARCHAR(255)");
+    } catch (Exception $e) {
+    }
+    try {
+        $db->exec("ALTER TABLE services ADD COLUMN image_url VARCHAR(255)");
+    } catch (Exception $e) {
+    }
+
+    echo "Tables created/updated successfully.<br>";
 
     // Seed Categories
     $categories = [

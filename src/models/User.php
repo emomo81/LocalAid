@@ -10,6 +10,12 @@ class User
     public $password;
     public $role;
 
+    // Profile Fields
+    public $phone;
+    public $bio;
+    public $location;
+    public $avatar_url;
+
     public function __construct($db)
     {
         $this->conn = $db;
@@ -47,7 +53,7 @@ class User
     // Check if email exists
     public function emailExists()
     {
-        $query = "SELECT id, username, password_hash, role FROM " . $this->table_name . " WHERE email = ? LIMIT 0,1";
+        $query = "SELECT id, username, password_hash, role, phone, bio, location, avatar_url FROM " . $this->table_name . " WHERE email = ? LIMIT 0,1";
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(1, $this->email);
@@ -59,6 +65,10 @@ class User
             $this->username = $row['username'];
             $this->password = $row['password_hash']; // Store hash to verify later
             $this->role = $row['role'];
+            $this->phone = $row['phone'];
+            $this->bio = $row['bio'];
+            $this->location = $row['location'];
+            $this->avatar_url = $row['avatar_url'];
             return true;
         }
         return false;
@@ -69,6 +79,44 @@ class User
     public function verifyPassword($password)
     {
         return password_verify($password, $this->password);
+    }
+
+    // Get Profile Data
+    public function getProfile()
+    {
+        $query = "SELECT username, email, role, phone, bio, location, avatar_url FROM " . $this->table_name . " WHERE id = ? LIMIT 0,1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(1, $this->id);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // Update Profile
+    public function updateProfile()
+    {
+        $query = "UPDATE " . $this->table_name . " 
+                SET phone = :phone, bio = :bio, location = :location, avatar_url = :avatar_url 
+                WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        // Sanitize
+        $this->phone = htmlspecialchars(strip_tags($this->phone));
+        $this->bio = htmlspecialchars(strip_tags($this->bio));
+        $this->location = htmlspecialchars(strip_tags($this->location));
+        $this->avatar_url = htmlspecialchars(strip_tags($this->avatar_url));
+
+        // Bind
+        $stmt->bindParam(":phone", $this->phone);
+        $stmt->bindParam(":bio", $this->bio);
+        $stmt->bindParam(":location", $this->location);
+        $stmt->bindParam(":avatar_url", $this->avatar_url);
+        $stmt->bindParam(":id", $this->id);
+
+        if ($stmt->execute()) {
+            return true;
+        }
+        return false;
     }
 }
 ?>

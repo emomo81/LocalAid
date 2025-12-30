@@ -9,19 +9,19 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          50: '#eef2ff',
-          100: '#e0e7ff',
-          500: '#6366f1',
-          600: '#4f46e5',
-          700: '#4338ca',
+          50: '#f0fdfa',
+          100: '#ccfbf1',
+          500: '#14b8a6', // Teal-500
+          600: '#0d9488', // Teal-600
+          700: '#0f766e', // Teal-700
         },
-        secondary: '#ec4899',
+        secondary: '#f43f5e', // Rose
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Inter', 'sans-serif'], // Keep Inter
       },
       backdropBlur: {
-        xs: '2px',
+        xs: '2px', // Keep
       },
       animation: {
         'fade-in-up': 'fadeInUp 0.8s ease-out forwards',

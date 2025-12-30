@@ -3,30 +3,34 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center animate-fade-in">
         <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
             Liberia's #1 Home Services <br />
-            <span class="bg-clip-text text-transparent bg-gradient-to-r from-teal-300 to-blue-500">Fast, Reliable, & Local.</span>
+            <span class="bg-clip-text text-transparent bg-gradient-to-r from-teal-300 to-blue-500">Fast, Reliable, &
+                Local.</span>
         </h1>
         <p class="mt-4 text-xl text-gray-300 max-w-2xl mx-auto mb-10">
-            Connect with trusted professionals in Monrovia, Paynesville, and beyond. From cleaning to repairs, we've got you covered.
+            Connect with trusted professionals in Monrovia, Paynesville, and beyond. From cleaning to repairs, we've got
+            you covered.
         </p>
 
         <!-- Search Bar -->
-        <div class="max-w-3xl mx-auto glass p-2 rounded-full flex items-center shadow-2xl">
+        <form action="index.php" method="GET"
+            class="max-w-3xl mx-auto glass p-2 rounded-full flex items-center shadow-2xl">
+            <input type="hidden" name="page" value="services">
             <div class="flex-grow flex items-center px-4">
                 <i class="fa-solid fa-location-dot text-gray-400 mr-3"></i>
-                <input type="text" placeholder="e.g. Sinkor, Monrovia"
+                <input type="text" name="location" placeholder="e.g. Sinkor, Monrovia"
                     class="bg-transparent border-none focus:ring-0 text-white placeholder-gray-400 w-full">
             </div>
             <div class="h-8 w-px bg-gray-600 mx-2"></div>
             <div class="flex-grow flex items-center px-4">
                 <i class="fa-solid fa-magnifying-glass text-gray-400 mr-3"></i>
-                <input type="text" placeholder="What help do you need?"
+                <input type="text" name="q" placeholder="What help do you need?"
                     class="bg-transparent border-none focus:ring-0 text-white placeholder-gray-400 w-full">
             </div>
-            <button
+            <button type="submit"
                 class="bg-gradient-to-r from-primary-600 to-secondary text-white rounded-full h-12 w-12 flex items-center justify-center hover:scale-105 transition transform shadow-lg">
                 <i class="fa-solid fa-arrow-right"></i>
             </button>
-        </div>
+        </form>
     </div>
 </header>
 
@@ -51,7 +55,8 @@
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     ?>
                     <!-- Service Card -->
-                    <div class="glass p-6 rounded-2xl hover:bg-white/10 transition cursor-pointer group">
+                    <a href="index.php?page=services&q=<?php echo urlencode($row['name']); ?>"
+                        class="glass p-6 rounded-2xl hover:bg-white/10 transition cursor-pointer group block">
                         <div
                             class="<?php echo $row['bg_color_class']; ?> w-14 h-14 rounded-full flex items-center justify-center mb-4 transition">
                             <i
@@ -59,7 +64,7 @@
                         </div>
                         <h3 class="text-xl font-semibold mb-2"><?php echo htmlspecialchars($row['name']); ?></h3>
                         <p class="text-sm text-gray-400"><?php echo htmlspecialchars($row['description']); ?></p>
-                    </div>
+                    </a>
                     <?php
                 }
             } else {
@@ -68,7 +73,7 @@
             ?>
 
             <!-- More Services Link -->
-            <div
+            <a href="index.php?page=services"
                 class="glass p-6 rounded-2xl hover:bg-white/10 transition cursor-pointer group flex flex-col items-center justify-center text-center">
                 <div
                     class="bg-gray-700/50 w-14 h-14 rounded-full flex items-center justify-center mb-4 group-hover:bg-gray-600 transition">
@@ -76,7 +81,7 @@
                 </div>
                 <h3 class="text-xl font-semibold mb-2">View All</h3>
                 <p class="text-sm text-gray-400">Explore all 20+ services</p>
-            </div>
+            </a>
         </div>
     </div>
 </section>
